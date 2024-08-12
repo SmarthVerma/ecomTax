@@ -1,31 +1,29 @@
 import axios from "axios"
 import { useQuery } from "react-query"
-import { useDispatch } from "react-redux";
-import { storeData } from "../store/slices/productSlice/productSlice.js";
 
-const allProducts = () => {
-    return axios.get('/api/v1/products/all')
+
+const allProducts = ({ keyword }) => {
+    console.log('pornhub.com')
+    const url = `/api/v1/products/all?keyword=${keyword}`
+    console.log(url)
+    return axios.get(url)
 }
 
-const useAllProducts = () => {
-    const dispatch = useDispatch()
-    const { isLoading, data, isError, error } = useQuery("fetchingAllProducts", allProducts, {
-        select: (data) => {
-            return (
-                {
-                    totalProducts: data.data.data.totalProducts,
-                    products: data.data.data.products
-                }
-            )
+const useAllProducts = ({ keyword }) => {
+    const queryKey = `fetchingAllProducts_${keyword}`;  // Unique key for each keyword
+
+    const { isLoading, data, isError, error } = useQuery(
+        queryKey,
+        () => allProducts({ keyword }),
+        {
+            select: (data) => ({    
+                totalProducts: data.data.data.totalProducts,
+                products: data.data.data.products,
+            }),
         }
-    });
+    );
 
-
-    if (!isLoading) {
-        console.log(data)
-        dispatch(storeData(data))
-    }
-    return { isLoading, data, isError, error }
-}
+    return { isLoading, data, isError, error };
+};
 
 export { useAllProducts }

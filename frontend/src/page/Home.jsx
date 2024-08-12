@@ -6,7 +6,7 @@ import { useAllProducts } from '../hooks/useAllProducts';
 
 function Home() {
 
-    useAllProducts()
+
 
     return (
         <div>

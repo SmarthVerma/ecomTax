@@ -11,7 +11,6 @@ import img from '../../assets/products/hpLaptop.png'
 const ProductCard = ({ data }) => {
     const { _id: id, name, numOfReviews, price, ratings, images } = data
 
-    console.log('data incoming?', data)
     const options = {
         edit: false,
         value: ratings,

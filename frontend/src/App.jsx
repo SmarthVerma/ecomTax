@@ -14,8 +14,9 @@ import AdminAllUsers from './page/Admin/Admin.AllUsers';
 import UserProfile from './page/User/UserProfile';
 import Orders from './page/Admin/Admin.Orders';
 import MyOrders from './page/User/MyOrders';
-import ScrollTop from "./util/ScrollTop_Onload";
 import OrderDetails from './page/User/OrderDetails';
+import Cart from './page/User/Cart';
+import AddressForm from './page/User/EnterAddress';
 
 const queryClient = new QueryClient()
 function App() {
@@ -38,6 +39,8 @@ function App() {
     },
     { path: '/myorders', element: (<Layout> <MyOrders /> </Layout>) },
     { path: '/order-detail/:id', element: (<Layout> <OrderDetails /> </Layout>) },
+    { path: '/cart', element: (<Layout> <Cart /> </Layout>) },
+    { path: '/address', element: <AddressForm />}
   ]);
 
   return (

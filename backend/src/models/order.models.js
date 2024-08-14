@@ -5,7 +5,6 @@ const orderSchema = new Schema({
         address: { type: String, required: true },
         city: { type: String, required: true },
         state: { type: String, required: true },
-        city: { type: String, required: true },
         county: { type: String, required: true },
         pinCode: { type: String, required: true },
         phoneNo: { type: Number, required: true },

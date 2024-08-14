@@ -24,7 +24,7 @@ export default function MyOrders() {
                 }}
             >
                 <div>
-                    <h1 className='text-4xl font-bold  text-center cursor-default'>Your Orders</h1>
+                    <h1 className='text-4xl font-bold  text-center cursor-default font-kalam text-yellow-400'>Your Orders</h1>
                     <div className="divider"></div>
                 </div>
                 <div>

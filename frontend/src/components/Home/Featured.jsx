@@ -15,10 +15,10 @@ function Featured() {
 
 
   const { isLoading, data } = useAllProducts({ keyword: parms })
-  console.log('yes xxxxxxthis is params', parms)
-  console.log('Yes xxxxx this is keyword', keyword)
+  // console.log('yes xxxxxxthis is params', parms)
+  // console.log('Yes xxxxx this is keyword', keyword)
 
-  console.log({ data })
+  // console.log({ data })
 
 
 

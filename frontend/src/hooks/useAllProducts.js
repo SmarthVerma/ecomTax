@@ -3,9 +3,9 @@ import { useQuery } from "react-query"
 
 
 const allProducts = ({ keyword }) => {
-    console.log('pornhub.com')
+  
     const url = `/api/v1/products/all?keyword=${keyword}`
-    console.log(url)
+    // console.log(url)
     return axios.get(url)
 }
 

@@ -6,7 +6,7 @@ const ScrollTop = () => {
 
   useEffect(() => {
     // console.log('Current location:', location); // Detailed location logging
-    console.log('yah i am working',)
+    // console.log('yah i am working',)
     window.scrollTo(0, 0);
   }, [location]); // Dependency array includes location to trigger scroll on route change
 

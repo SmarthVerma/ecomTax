@@ -1,11 +1,11 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
-import Discription from "../../components/Product/Discription";
-import ReviewSubmit from "../../components/Product/ReviewSubmit";
-import OtherReviews from "../../components/Product/OtherReviews";
+import Discription from "../components/Product/Discription";
+import ReviewSubmit from "../components/Product/ReviewSubmit";
+import OtherReviews from "../components/Product/OtherReviews";
 
-import dummy1 from '../../assets/products/download.jpeg'
-import dummy2 from '../../assets/products/hpLaptop.png'
+import dummy1 from '../assets/products/download.jpeg'
+import dummy2 from '../assets/products/hpLaptop.png'
 import { Crousal2 } from '@/components/Product/Crousal2';
 
 const dummy = [dummy1, dummy2]

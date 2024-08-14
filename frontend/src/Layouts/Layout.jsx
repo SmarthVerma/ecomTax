@@ -1,14 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
-import Header from "./Header";
-import Footer from "./Footer";
-import Container from "./Container";
-import { footerHeight } from "../../constants/footerHeight.const";
-import { headerHeight } from "../../constants/headerHeight.const";
+import Header from "../components/Layouts/Header";
+import Footer from "../components/Layouts/Footer";
+import Container from "../components/Layouts/Container";
+import { footerHeight } from "../constants/footerHeight.const";
+import { headerHeight } from "../constants/headerHeight.const";
 import { Outlet } from "react-router-dom";
 import ScrollTop from "@/util/ScrollTop_Onload";
 const Layout = ({ children }) => {
 
-    
+
 
     const [footHeight, setFootHeight] = useState(null)
     const [headHeight, setHeadHeight] = useState(null)

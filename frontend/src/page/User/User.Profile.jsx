@@ -4,7 +4,7 @@ import { CiEdit } from "react-icons/ci";
 import ChangePassword from '@/components/user/ChangePassword';
 import EditProfile from '@/components/user/EditProfile';
 import { useParams } from 'react-router-dom';
-import { useGetUserDetails } from '@/hooks/useGetUserDetails';
+import { useGetUserDetails } from '@/hooks/general/useGetUserDetails';
 import Loader from '@/components/Loading/Loader';
 
 export default function UserProfile() {

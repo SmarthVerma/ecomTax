@@ -1,5 +1,5 @@
 import React from 'react'
-import NavbarAdmin from "../admin/navbarAdmin";
+import NavbarAdmin from "../components/admin/navbarAdmin";
 import { Outlet } from 'react-router-dom';
 
 function AdminLayout({ children }) {

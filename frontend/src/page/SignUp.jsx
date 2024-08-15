@@ -19,11 +19,12 @@ function SignUp() {
                     Welcome to <span className='text-orange-500'>Ecom</span>
                 </h1>
 
+
+                <form onSubmit={handleSubmit(handleSignup)} className='space-y-4'>
+                    {/* Avatar input */}
                 <div className='flex justify-center mb-6'>
                     <Avatar />
                 </div>
-
-                <form onSubmit={handleSubmit(handleSignup)} className='space-y-4'>
                     {/* Email Input */}
                     <div>
                         <label className="block text-sm font-medium text-gray-300 mb-1 ">Email</label>

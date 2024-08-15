@@ -8,7 +8,7 @@ const SearchForm = () => {
 
     
     const [queryParams, updateQueryParams] = useSearchParams();
-
+    const navigate = useNavigate()
     const keyword = queryParams.get('keyword')
     
     const { handleSubmit, register, setValue } = useForm({
@@ -24,6 +24,7 @@ const SearchForm = () => {
 
     const handleSearch = async (data) => {
         console.log(data)
+        navigate('/')
         updateQueryParams({ keyword: data.keyword }, {replace: true});
         setTimeout(() => { // otherwise wont work
             scrollToFeature()

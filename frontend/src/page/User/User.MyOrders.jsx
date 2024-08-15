@@ -11,7 +11,7 @@ export default function MyOrders() {
 
 
     return (
-        <div className='max-h-screen w-full flex justify-center'>
+        <div className='max-h-screen min-h-screen w-full flex justify-center'>
             <div
                 className=' max-w-4xl overflow-y-scroll  shrink-0 py-7 text-white'
                 style={{

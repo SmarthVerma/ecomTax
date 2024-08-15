@@ -85,6 +85,7 @@ const getSingleOrderItem = asyncHandler2(async (req, res, next) => {
 // Get logged-in user orders
 const myOrders = asyncHandler(async (req, res, next) => {
     const user = req.user;
+    console.log('wtff is this',req.user)
     const orders = await Order.aggregate([
         {
             "$match": {

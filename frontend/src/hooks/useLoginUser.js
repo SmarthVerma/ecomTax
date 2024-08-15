@@ -1,6 +1,7 @@
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useMutation } from "react-query";
+import { useNavigate } from "react-router-dom";
 
 
 const loginUser = (inputData) => {
@@ -26,6 +27,8 @@ const validation = ( {email, password} ) => {
 }
 
 const useLoginUser = () => {
+    const navigate = useNavigate()
+
     return useMutation((inputData) => {
         const isValid = validation(inputData)
         if (!isValid) throw new Error("Validations failed")
@@ -35,6 +38,7 @@ const useLoginUser = () => {
     {
         onSuccess: () => {
             toast.success('Logged in successfully')
+            navigate('/')
         },
         onError: (error) => {
             console.log('error', error.response.data.message)

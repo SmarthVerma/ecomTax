@@ -35,7 +35,7 @@ const useRegisterUser = () => {
         if (!isValid) throw new Error('Validation failed');
 
         const { email, name, password, confirmPassword } = inputData;
-
+        console.log('this is the inputData', inputData)
         const formData = new FormData();
         formData.append('email', email);
         formData.append('name', name);

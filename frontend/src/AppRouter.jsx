@@ -26,7 +26,7 @@ export const router = createBrowserRouter([
     { path: '/products/:id', element: (<Layout> <Product /> </Layout>) },
     { path: '/signup', element: <SignUp /> },
     { path: '/login', element: <Login /> },
-    { path: '/profile/:id', element: <UserProfile /> },
+    { path: '/profile/', element: <UserProfile /> },
     {
         path: "/admin", element: <AdminLayout />,
         children: [

@@ -1,6 +1,6 @@
 import axios from "axios";
 import toast from "react-hot-toast";
-import { useQuery, useMutation } from "react-query";
+import { useMutation } from "react-query";
 
 
 const logoutUser = () => {
@@ -13,8 +13,8 @@ const useLogoutUser = () => {
         logoutUser,
         {
             onSuccess: (data) => {
-                    console.log('this is data', data)
                 toast.success("Logout Successfully")
+                window.location.reload()
             },
             onError: (data) => toast.success("Logout Failed")
         }

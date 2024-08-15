@@ -13,7 +13,7 @@ function Welcome() {
     return (
         <>
             <div className='clipPath bg-gray-900 min-h-screen flex relative flex-col justify-center items-center font-Roboto bg-linear-red m-0'>
-
+        <div className='container'>
                 <div className='relative z-10 text-white  text-center flex flex-col items-center place-content-center justify-center'>
                     <h3 className='text-2xl sm:text-3xl font-thin'>Welcome to Ecommerce</h3>
                     <h1 className='uppercase text-4xl m-4 font-bold'>Explore Our Latest Innovations</h1>
@@ -46,6 +46,7 @@ function Welcome() {
                     </div>
 
                 </div>
+            </div>
             </div>
         </>
     )

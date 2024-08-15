@@ -4,13 +4,11 @@ import { useDispatch } from "react-redux";
 
 const getUserDetails = () => {
     const url = "/api/v1/user/profile"
-    console.log('this is url', url)
     return axios.get(url)
 }
 
 const useGetUserDetails = () => {
     const dispatch = useDispatch()
-    console.log(`check`)
     const {isLoading, data} = useQuery(
         'fetch-auth',
         getUserDetails,
@@ -21,10 +19,10 @@ const useGetUserDetails = () => {
             onError: (data) => {
                 console.log(`error Data`, data)
             },
-            select: (data) => data.data
+            select: (data) => data.data.data
         }
     )
-
+    return {isLoading, data}
 }
 
 

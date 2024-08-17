@@ -43,7 +43,7 @@ const Header = (props, ref) => {
                         </li>
                         {(user?.role == 'admin' || user?.role == 'owner') && (
                             <li>
-                                <NavLink to="/admin" className={({ isActive }) => getNavLinkClass(isActive)}>
+                                <NavLink to="/admin/home" className={({ isActive }) => getNavLinkClass(isActive)}>
                                     Admin
                                 </NavLink>
                             </li>

@@ -14,7 +14,9 @@ import {
     UserEnterAddress,
     UserMyOrders,
     UserOrderDetails,
-    UserProfile
+    UserProfile,
+    ForgotPassword,
+    ResetPassword,
 } from "./page/index";
 
 import Layout from "./Layouts/Layout";
@@ -26,9 +28,12 @@ export const router = createBrowserRouter([
     { path: '/products/:id', element: (<Layout> <Product /> </Layout>) },
     { path: '/signup', element: <SignUp /> },
     { path: '/login', element: <Login /> },
+    { path: '/forgot-password', element: <ForgotPassword />},
     { path: '/profile/', element: <UserProfile /> },
+    { path: '/password/reset/:token', element: <ResetPassword /> },
     {
         path: "/admin", element: <AdminLayout />,
+        
         children: [
             { path: 'home', element: <AdminHome /> },
             { path: 'create-product', element: <AdminCreateProduct /> },

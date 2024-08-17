@@ -26,7 +26,7 @@ const sendEmail = async (options) => {
         </div>
         <div className="p-6">
             <h2 className="text-2xl font-semibold mb-4">Hello, ${options.name}!</h2>
-            <p className="text-gray-700 mb-6 text-3xl">We are here to inform u that your passowrd token is generated</p>
+            <p className="text-gray-700 mb-6 text-3xl">We are here to inform you that your passowrd token is generated</p>
             <p>${options.message}</p>
             <p className="text-gray-700 mb-6">If you have any questions, feel free to reach out to our support team at any time.</p>
             <div className="text-center">

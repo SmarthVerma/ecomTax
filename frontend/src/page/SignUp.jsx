@@ -1,16 +1,19 @@
 import React from 'react';
-import Avatar from '@/components/Avatar';
 import { useForm } from "react-hook-form";
 import { useRegisterUser } from "../hooks/useRegisterUser";
 import { Link } from 'react-router-dom'; // Assuming routing is done with react-router-dom
+import SelectAvatar from '@/components/SelectAvatar';
 
 function SignUp() {
-    const { register, handleSubmit, control } = useForm();
+    const { register, handleSubmit, control, setValue, watch } = useForm();
     const { mutate: signup } = useRegisterUser();
 
     const handleSignup = (inputData) => {
         signup(inputData);
     };
+
+    // Watch avatar field value
+    const avatar = watch("avatar");
 
     return (
         <div className='min-h-screen w-full flex flex-col justify-center items-center bg-gray-900'>
@@ -21,10 +24,13 @@ function SignUp() {
 
 
                 <form onSubmit={handleSubmit(handleSignup)} className='space-y-4'>
-                    {/* Avatar input */}
-                <div className='flex justify-center mb-6'>
-                    <Avatar />
-                </div>
+                  {/* Avatar input */}
+                    <div className='flex justify-center mb-6'>
+                        <SelectAvatar
+                            profileSrc={avatar} // Controlled value from form
+                            onChange={(file) => setValue("avatar", file)} // Handle avatar change
+                        />
+                    </div>
                     {/* Email Input */}
                     <div>
                         <label className="block text-sm font-medium text-gray-300 mb-1 ">Email</label>

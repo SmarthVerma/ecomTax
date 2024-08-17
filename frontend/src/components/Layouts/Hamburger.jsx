@@ -6,9 +6,11 @@ import { IoMdContacts } from "react-icons/io";
 import { MdAdminPanelSettings } from "react-icons/md";
 import { FaDiscord } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import { useAuthContext } from '@/context/AuthContext';
 
-const Hamburger = ({side}) => {
-    
+
+const Hamburger = ({ side }) => {
+    const { isLoading, data: user } = useAuthContext()
     return (
         <Sheet key={side}>
             <SheetTrigger asChild>
@@ -24,9 +26,12 @@ const Hamburger = ({side}) => {
                     <Link to={'/about'} className="flex items-center gap-2 text-white text-lg font-semibold hover:text-gray-400 hover:bg-gray-700 p-2 rounded transition duration-200 ease-in-out">
                         <IoMdContacts />
                         About</Link>
-                    <Link to={'/admin/home'} className="flex items-center gap-2 text-white text-lg font-semibold hover:text-gray-400 hover:bg-gray-700 p-2 rounded transition duration-200 ease-in-out">
-                        <MdAdminPanelSettings />
-                        Admin</Link>
+                    {(user?.role == 'admin' || user?.role == 'owner') && (
+                        <Link to={'/admin/home'} className="flex items-center gap-2 text-white text-lg font-semibold hover:text-gray-400 hover:bg-gray-700 p-2 rounded transition duration-200 ease-in-out">
+                            <MdAdminPanelSettings />
+                            Admin</Link>
+                    )}
+
                     <Link href="#" className="flex items-center gap-2 text-white text-lg font-semibold hover:text-gray-400 hover:bg-gray-700 p-2 rounded transition duration-200 ease-in-out">
                         <FaDiscord />
                         Github</Link>

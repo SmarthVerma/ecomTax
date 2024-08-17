@@ -1,4 +1,4 @@
-import Avatar from "../../components/Avatar";
+import Avatar from "../SelectAvatar";
 import { useForm } from 'react-hook-form';
 import { CiEdit } from "react-icons/ci";
 

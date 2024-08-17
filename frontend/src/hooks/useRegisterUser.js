@@ -34,18 +34,20 @@ const useRegisterUser = () => {
         const isValid = validations(inputData);
         if (!isValid) throw new Error('Validation failed');
 
-        const { email, name, password, confirmPassword } = inputData;
+        const { email, name, password, confirmPassword, avatar } = inputData;
         console.log('this is the inputData', inputData)
         const formData = new FormData();
         formData.append('email', email);
         formData.append('name', name);
         formData.append('password', password);
         formData.append('confirmPassword', confirmPassword);
+        formData.append('avatar', avatar)
 
         return registerUser(formData);
     }, {
         onSuccess: () => {
             toast.success('User registered successfully');
+            
         },
         onError: (error) => {
             toast.error(error.message || 'An error occurred');
@@ -54,3 +56,4 @@ const useRegisterUser = () => {
 };
 
 export { useRegisterUser }
+

@@ -3,16 +3,18 @@ import { forwardRef } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import TaxEcomLogo from '../TaxEcomLogo';
 import Hamburger from './Hamburger';
-import CartOrders from '../CartOrders';
+import CartOrders from './CartOrders';
 import SearchForm from '../Search';
 import { useAuthContext } from '@/context/AuthContext';
 import { NavbarUser } from '../user/NavbarUser';
+import ReturnOrders from './Return-Orders';
 
 const getNavLinkClass = (isActive) =>
     `block py-2 pr-4 pl-3 ${isActive ? 'text-orange-300' : 'text-gray-400'
     } duration-200 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-orange-400 lg:p-0`;
 
 const Header = (props, ref) => {
+
     const { isLoading, data: user } = useAuthContext()
 
     return (
@@ -48,9 +50,14 @@ const Header = (props, ref) => {
                         )}
 
                         <li>
-                            <NavLink to="/github" className={({ isActive }) => getNavLinkClass(isActive)}>
+                            <a
+                                href="https://github.com/SmarthVerma"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="block py-2 pr-4 pl-3 text-gray-400 duration-200 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-orange-400 lg:p-0"
+                            >
                                 Github
-                            </NavLink>
+                            </a>
                         </li>
                     </ul>
 
@@ -59,20 +66,12 @@ const Header = (props, ref) => {
                     <SearchForm />
                 </div>
                 <div className="hidden md:hidden lg:flex items-center h-full gap-x-6 ml-auto">
-                    <div className='w-max'>
-                        <Link to={'/myorders'}>
-                            <div className='hover:outline p-2'>
-                                <p className='text-xs'>
-                                    Return
-                                </p>
-                                <span className='font-bold'>& Orders</span>
-                            </div>
-                        </Link>
-                    </div>
                     <div>
-                        <Link>
-                            <CartOrders />
-                        </Link>
+                        <ReturnOrders />
+                    </div>
+
+                    <div>
+                        <CartOrders />
                     </div>
 
                 </div>

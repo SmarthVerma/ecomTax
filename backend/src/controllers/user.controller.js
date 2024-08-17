@@ -189,6 +189,8 @@ const forgotPassword = asyncHandler(async (req, res) => {
 // reset password
 const resetPassword = asyncHandler(async (req, res) => {
     // creating token hash
+    const { newPassword, confirmPassword } = req.body
+    
     const resetPasswordToken = crypto
         .createHash("sha256")
         .update(req.params.token) // got token from /:token
@@ -204,7 +206,8 @@ const resetPassword = asyncHandler(async (req, res) => {
 
     if (!user) throw new ApiError(400, "Reset Passowrd Token is invalid or has been expired")
 
-    const { newPassword, confirmPassword } = req.body
+
+
     if (newPassword !== confirmPassword) {
         throw new ApiError(400, "Password dosnt match")
     }

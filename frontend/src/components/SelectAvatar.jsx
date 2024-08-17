@@ -2,11 +2,10 @@ import React, { useRef, useState, useEffect } from 'react';
 import { Avatar } from '@mui/material';
 import { FaCamera } from "react-icons/fa";
 
-export default function SelectAvatar({ profileSrc }) {
+export default function SelectAvatar({ onChange, value, profileSrc }) {
     const inputRef = useRef();
     const [avatarSrc, setAvatarSrc] = useState(profileSrc);
 
-    console.log('why', profileSrc)
 
     const handleFileInput = () => {
         console.log('Button clicked');
@@ -16,6 +15,7 @@ export default function SelectAvatar({ profileSrc }) {
     const handleFileChange = (e) => {
         console.log('File input changed', e);
         const file = e.target.files[0];
+        onChange(file); // Send the file back to the form
         if (file) {
             const objectURL = URL.createObjectURL(file);
             setAvatarSrc(objectURL);

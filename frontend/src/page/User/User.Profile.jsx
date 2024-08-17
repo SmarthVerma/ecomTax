@@ -5,6 +5,7 @@ import EditProfile from '@/components/user/EditProfile';
 import Loader from '@/components/Loading/Loader';
 import { useAuthContext } from '@/context/AuthContext';
 import BackButton from '@/components/BackButton';
+import formatDate from '@/util/formatDateString';
 
 export default function UserProfile() {
 
@@ -41,7 +42,7 @@ export default function UserProfile() {
             <div className="divider m-0"></div>
             <div className="w-full text-center">
               <h2 className="font-bold text-orange-400 text-xl">Joined on</h2>
-              <span className="text-lg font-regular opacity-50 text-white">{data?.createdAt}</span>
+              <span className="text-lg font-regular opacity-50 text-white">{formatDate(data?.createdAt) }</span>
             </div>
             <div className="divider"></div>
             <div className="flex space-x-4 mb-4">

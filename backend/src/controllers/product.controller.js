@@ -55,7 +55,7 @@ const createProduct = asyncHandler(async (req, res, next) => {
     let numberPrice = parseInt(price)
 
     const numOfFiles = req.files?.images?.length
-    
+
     if (numOfFiles == undefined) throw new ApiError(400, "Select atleast 1 image of product")
     console.log('num of files', numOfFiles)
 
@@ -171,104 +171,70 @@ const getAllReviews = asyncHandler(async (req, res, next) => {
 
 
 })
-
 const createEditReview = asyncHandler(async (req, res, next) => {
-    // user login walla he de skta ha
-    // have to check if he already review dia ha
-    // ratings ki calculation
-    const { productId } = req.params
-    const { comment, rating } = req.body
-    const nRating= Number(rating) 
-    console.log('this is value of ', nRating)
-    console.log('This is type of ', typeof(nRating))
-    const user = req.user
+    const { productId } = req.params;
+    const { comment, rating } = req.body;
+
+    // Convert rating to a number
+    const nRating = Number(rating);
+
+    const user = req.user;
 
     const review = {
         name: user.name,
         comment,
         rating: nRating,
         createdBy: user.id
-    }
+    };
 
-    console.log('i think error here', user.name)
+    // Find the product
+    const product = await Product.findById(productId);
+    if (!product) throw new ApiError(404, "Product with this id not found");
 
+    // Check if the user has already reviewed
+    const isReviewed = product.reviews.some((each) => each.createdBy == user.id);
 
-    const product = await Product.findById(productId)
-    if (!product) throw new ApiError(404, "Product with this id not found")
-
-
-    const isReviewed = product.reviews.some((each) => each.createdBy == user.id)
     if (isReviewed) {
-        const index = product.reviews.findIndex(review => review.createdBy == user.id)
-        product.reviews[index].comment = comment
-        product.reviews[index].rating = rating
+        // Update existing review
+        const index = product.reviews.findIndex(review => review.createdBy == user.id);
+        product.reviews[index].comment = comment;
+        product.reviews[index].rating = nRating;
+    } else {
+        // Add new review
+        product.reviews.push(review);
     }
-    else {
-        product.reviews.push(review)
-    }
+    await product.save({ validateBeforeSave: false });
 
-    const avgRatings = await Product.aggregate([
-        {
-            $match: {
-                _id: new mongoose.Types.ObjectId("668902adb6fa6d3b01d14501")
-            },
-        },
-        {
+    // Update product with aggregated values
+    const [avgRatings, numOfReviews] = await Promise.all([
+        Product.aggregate([
+            { $match: { _id: new mongoose.Types.ObjectId(productId) } },
+            { $unwind: "$reviews" },
+            { $group: { _id: "$_id", ratings: { $avg: "$reviews.rating" } } },
+            { $project: { _id: 0, ratings: 1 } }
+        ]),
+        Product.aggregate([
+            { $match: { _id: new mongoose.Types.ObjectId(productId) } },
+            { $unwind: "$reviews" },
+            { $group: { _id: "$_id", numOfReviews: { $sum: 1 } } },
+            { $project: { _id: 0, numOfReviews: 1 } }
+        ])
+    ]);
 
-            $unwind: "$reviews"
-        },
-        {
-            $group: {
-                _id: "$_id",
-                ratings: {
-                    $avg: "$reviews.rating"
-                }
-            }
-        },
-        {
-            $project: {
-                _id: 0,
-                ratings: 1
-            }
-        }
-    ])
-    const numOfReviews = await Product.aggregate([
-        {
-            $match: {
-                _id: new mongoose.Types.ObjectId("668902adb6fa6d3b01d14501")
-            },
-        },
-        {
-            $unwind: "$reviews"
-        },
-        {
-            $group: {
-                _id: "$_id",
-                "numOfReviews": {
-                    $sum: 1
-                }
-            }
-        },
-        {
-            $project: {
-                _id: 0,
-                numOfReviews: 1
-            }
-        }
-
-    ])
-
-    console.log('this is avgRating', avgRatings )
-    console.log('this is product', product)
-    product.ratings = avgRatings[0]?.ratings || 0
+    // Update product ratings and review count
+    product.ratings = avgRatings[0]?.ratings || 0;
     product.numOfReviews = numOfReviews[0]?.numOfReviews || 0
-    await product.save({ validateBeforeSave: false })
+    console.log('No of reviews', numOfReviews)
+    console.log('No of reviews', avgRatings)
 
-    console.log('avgratings', avgRatings[0].ratings)
-    console.log('numOfReviews', numOfReviews[0].numOfReviews)
+
+    // Save the updated product
+    await product.save({ validateBeforeSave: false });
+
+    // Respond with success message
     return res.status(200)
-        .json(new ApiResponse(200, product, "Succesfully added review"))
-})
+        .json(new ApiResponse(200, product, "Successfully added review"));
+});
 
 const deleteReview = asyncHandler(async (req, res, next) => {
     const { productId } = req.params;
@@ -276,48 +242,52 @@ const deleteReview = asyncHandler(async (req, res, next) => {
 
     // Step 1: Find the product and check if user has made a review
     const product = await Product.findById(productId);
+    if (!product) {
+        throw new ApiError(404, "Product not found");
+    }
     const isReviewed = product.reviews.some((review) => review.createdBy == user.id);
     if (!isReviewed) {
         throw new ApiError(400, "You haven't made a review yet");
     }
-
     // Step 2: Remove the review from product.reviews
     const index = product.reviews.findIndex((review) => review.createdBy == user.id);
-    product.reviews.splice(index, 1);
+    if (index !== -1) {
+        product.reviews.splice(index, 1);
+    } else {
+        throw new ApiError(400, "Review not found");
+    }
+
+    await product.save({ validateBeforeSave: false });
 
     // Step 3: Aggregate average ratings and number of reviews
     const avgRatings = await Product.aggregate([
-        {
-            $match: {
-                _id: new mongoose.Types.ObjectId(productId),
-            },
-        },
-        {
-            $unwind: "$reviews",
-        },
+        { $match: { _id: new mongoose.Types.ObjectId(productId) } },
+        { $unwind: "$reviews" },
         {
             $group: {
                 _id: "$_id",
-                ratings: {
-                    $avg: "$reviews.rating",
-                },
-                numOfReviews: {
-                    $sum: 1,
-                },
-            },
+                ratings: { $avg: "$reviews.rating" },
+                numOfReviews: { $sum: 1 }
+            }
         },
         {
             $project: {
                 _id: 0,
                 ratings: 1,
-                numOfReviews: 1,
-            },
-        },
+                numOfReviews: 1
+            }
+        }
     ]);
 
     // Step 4: Update product with aggregated values
-    product.ratings = avgRatings[0].ratings;
-    product.numOfReviews = avgRatings[0].numOfReviews;
+    if (avgRatings.length === 0) {
+        product.ratings = 0;
+        product.numOfReviews = 0;
+    } else {
+        console.log('this is really stupod bug', avgRatings)
+        product.ratings = avgRatings[0].ratings;
+        product.numOfReviews = avgRatings[0].numOfReviews;
+    }
 
     // Step 5: Save the updated product
     await product.save({ validateBeforeSave: false });

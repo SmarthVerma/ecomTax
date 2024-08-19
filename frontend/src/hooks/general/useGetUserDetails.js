@@ -14,10 +14,10 @@ const useGetUserDetails = () => {
         getUserDetails,
         {
             onSuccess: (data) => {
-                console.log(`this is success data`, data)
+                // console.log(`this is success data`, data)
             },
             onError: (data) => {
-                console.log(`error Data`, data)
+                // console.log(`error Data`, data)
             },
             select: (data) => data.data.data
         }

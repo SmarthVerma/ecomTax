@@ -12,7 +12,6 @@ export const useAuthContext = () => {
 }    
 
 export const AuthContextProvider = ({ children }) => {
-    console.log('authVerification',)
     const { isLoading, data } = useGetUserDetails()
 
     return (<AuthContext.Provider value={{isLoading, data}}>

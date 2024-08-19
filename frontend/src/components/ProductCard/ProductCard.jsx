@@ -2,7 +2,7 @@
 https://tinyurl.com/ffWishlistProductCard 
 */
 import React from "react";
-import ReactStars from 'react-rating-stars-component'
+import ReactStars from 'react-stars'
 import "./ProductCard.css";
 import { Link } from "react-router-dom";
 import img from '../../assets/products/hpLaptop.png'

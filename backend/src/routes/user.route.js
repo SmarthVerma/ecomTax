@@ -14,7 +14,7 @@ import {
     updateProfile,
     updateRole
 } from "../controllers/user.controller.js";
-import { upload } from "../middlewares/multer.middleware.js";
+import { upload } from "../middlewares/multer.middleware.js"; 
 import { authorizeRoles, verifyAuth } from "../middlewares/auth.middleware.js";
 import { editHeroPage } from "../controllers/announcement.controller.js";
 

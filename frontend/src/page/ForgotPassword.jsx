@@ -6,7 +6,7 @@ import { toast } from 'react-hot-toast';
 const ForgotPassword = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
 
-    const {mutate: forgotPassword} = useForgotPassword()
+    const { mutate: forgotPassword } = useForgotPassword()
 
     const onSubmit = (data) => {
         console.log(' this is the forgot data', data)

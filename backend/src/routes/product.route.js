@@ -28,6 +28,8 @@ router.route('/admin/:id')
 router.route('/:productId').get(getProduct)
 //reviews
 router.route('/reviews/:productId/all').get(getAllReviews)
-router.route("/reviews/:productId").post(verifyAuth, createEditReview).delete(verifyAuth, deleteReview)
+router.route("/reviews/:productId")
+    .post(verifyAuth, createEditReview)
+    .delete(verifyAuth, deleteReview)
 
 export default router

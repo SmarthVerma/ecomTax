@@ -4,8 +4,6 @@ import { useAuthContext } from '@/context/AuthContext';
 const ReturnOrders = () => {
     const { isLoading, data: user } = useAuthContext();
 
-    console.log(user);
-
     return (
         <>
             {(user?.role === 'user' || user?.role === 'admin' || user?.role === 'owner') && (

@@ -2,7 +2,6 @@ import axios from "axios"
 import { useQuery } from "react-query"
 
 const getSingleUser = (userId) => {
-    console.log('user id ', userId)
     const url = `/api/v1/user/admin/user/${userId}`
     return axios.get(url)
 }

@@ -1,33 +1,37 @@
 import { useAllProducts } from '@/hooks/general/useAllProducts';
-import { productLimit } from '@/util/productLimit';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
-import toast from 'react-hot-toast';
-
 
 
 const initialState = {
-    page : 1,
+    currentPage: 1,
     totalProducts: 0,
-    productLimit: 6
+    noOfProducts: 0,
+    productLimit: 6,
+    totalPage: 0,
+    products: null
 };
 
 const paginSlice = createSlice({
-    name: 'user',
+    name: 'pagination',
     initialState,
     reducers: {
-        storeTotalProd: (state, action) => {
+        storeTotalProducts: (state, action) => {
             state.totalProducts = action.payload
         },
         storeProductLimit: (state, action) => {
-            console.log('reach here?')
             state.productLimit = action.payload
-        }, 
+        },
+        storeProducts: (state, action) => {
+            state.products = action.payload
+        },
+        storePage: (state, action) => {
+            state.page = action.payload
+        },
         nextPage: (state, action) => {
-            useAllProducts({page: state.page + 1})
+            useAllProducts({ page: state.page + 1 })
         }
     }
 });
 
-export const { storeTotalProd, storeProductLimit, nextPage } = paginSlice.actions;
+export const { storeTotalProducts, storeProductLimit, storeProducts, nextPage, storePage } = paginSlice.actions;
 export default paginSlice.reducer;

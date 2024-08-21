@@ -15,7 +15,7 @@ function Featured() {
   }, [keyword])
 
 
-  const { isLoading, data } = useAllProducts({ keyword: parms, page: 1 })
+  const { isLoading, data } = useAllProducts({ keyword: parms})
   // console.log('yes xxxxxxthis is params', parms)
   // console.log('Yes xxxxx this is keyword', keyword)
 

@@ -9,12 +9,22 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js";
 const getAllProducts = asyncHandler(async (req, res, next) => {
     console.log(`req.query`, req.query)
     console.log(`req.param`, req.params)
-    
+
     const apiFeature = new ApiFeatures(Product.find(), req.query)
         .search()
         .filter()
         .pagination()
+
+    const noOfProd = new ApiFeatures(Product.find(), req.query)
+        .search()
+        .filter()
+        .noOfProducts()
+
     const products = await apiFeature.query
+    const noOfProducts = await noOfProd.query
+
+    console.log('this is the total produts in apiFeatures', noOfProducts)
+
 
     const productCount = await Product.aggregate([
         {
@@ -33,7 +43,7 @@ const getAllProducts = asyncHandler(async (req, res, next) => {
         .json(
             new ApiResponse(
                 200,
-                { products, totalProducts },
+                { products, totalProducts, noOfProducts },
                 "All the products"
             )
         )

@@ -17,6 +17,7 @@ const convertOperators = (obj) => {
 
 class ApiFeatures {
 
+
     constructor(query, queryStr) {
         this.query = query     // getting Product.find()
         this.queryStr = queryStr // getting all req.params
@@ -33,7 +34,8 @@ class ApiFeatures {
             } : {}
 
         this.query = this.query.find({ ...keyword });
-        return this
+
+        return this // alows u to chain methods
     }
 
     filter() {
@@ -47,11 +49,17 @@ class ApiFeatures {
         return this
     }
 
+    noOfProducts() {
+        // Create a copy of the query without pagination to count documents
+        this.query = this.query.countDocuments();
+        return this
+    }
+
     pagination() {
 
         const currentPage = this.queryStr.page || 1
-        console.log('currentPage', currentPage)
-        
+        console.log('currentPageyy', currentPage)
+
         const resultPerPage = this.queryStr.limit || 3;
 
         const skip = resultPerPage * (currentPage - 1) // its math

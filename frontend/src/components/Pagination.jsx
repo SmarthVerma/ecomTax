@@ -5,19 +5,27 @@ import {
     PaginationEllipsis
 } from "@/components/ui/pagination";
 import { useSelector } from "react-redux";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useAllProducts } from "@/hooks/general/useAllProducts";
 
 function PaginationCN() {
     const totalProduct = useSelector(state => state.pagin.totalProducts);
     const productLimit = useSelector(state => state.pagin.productLimit);
-
-    const [currentPage, setCurrentPage] = useState(1);
+    const currentPage = useSelector(state => state.pagin.currentPage)
+    
     const noOfPages = Math.ceil(totalProduct / productLimit);
+
+    // Fetch products based on the current page
+    const { isLoading, data } = useAllProducts({ page: currentPage });
 
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber);
-        // Add any additional logic for page change here, e.g., fetching new data
     };
+
+    useEffect(() => {
+        // Effect will trigger every time currentPage changes
+        // Any additional logic that should happen after page change can be added here
+    }, [currentPage]);
 
     return (
         <Pagination>

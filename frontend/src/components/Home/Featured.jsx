@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import ProductCard from '../ProductCard/ProductCard';
-import { useAllProducts } from '@/hooks/useAllProducts';
+import { useAllProducts } from '@/hooks/general/useAllProducts';
 import { useSearchParams } from 'react-router-dom';
+import { PaginationCN } from '../Pagination';
 
 function Featured() {
 
@@ -14,7 +15,7 @@ function Featured() {
   }, [keyword])
 
 
-  const { isLoading, data } = useAllProducts({ keyword: parms })
+  const { isLoading, data } = useAllProducts({ keyword: parms, page: 1 })
   // console.log('yes xxxxxxthis is params', parms)
   // console.log('Yes xxxxx this is keyword', keyword)
 
@@ -38,7 +39,7 @@ function Featured() {
         </p>
       )}
 
-      <div className='w-full flex justify-center items-center p-4'>
+      <div className='w-full flex flex-col justify-center items-center p-4'>
         <div className="min-h-full grid m-auto gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 justify-center items-start">
           {isLoading ? (
             <div className='w-full text-center '>
@@ -52,6 +53,9 @@ function Featured() {
             ))
           )}
 
+        </div>
+        <div className=' text-orange border'>
+          <PaginationCN />
         </div>
       </div>
     </div>

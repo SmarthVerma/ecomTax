@@ -9,14 +9,11 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js";
 const getAllProducts = asyncHandler(async (req, res, next) => {
     console.log(`req.query`, req.query)
     console.log(`req.param`, req.params)
-
-
-    const resultPerPage = 6;
-
+    
     const apiFeature = new ApiFeatures(Product.find(), req.query)
         .search()
         .filter()
-        .pagination(resultPerPage)
+        .pagination()
     const products = await apiFeature.query
 
     const productCount = await Product.aggregate([

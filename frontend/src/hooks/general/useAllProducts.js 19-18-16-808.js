@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux"
 const allProducts = async ({ keyword, page }) => {
     const prodLimit = productLimit()
     const url = `/api/v1/products/all?keyword=${keyword || ''}&limit=${prodLimit}&page=${page}`
-    console.log(url)
+    // console.log(url)
     return await axios.get(url)
 }
 
@@ -24,8 +24,8 @@ const useAllProducts = ({ keyword, page }) => {
         {
             select: (data) => data.data.data,
             onSuccess: (data) => {
-                console.log('test onSuccess Data', data)
-                console.log(`noOfProducts`, data.noOfProducts)
+                // console.log('test onSuccess Data', data)
+                // console.log(`noOfProducts`, data.noOfProducts)
                 dispatch(storeProductLimit(prodLimit))
                 dispatch(storeTotalProducts(data.totalProducts))
                 dispatch(storeProducts(data.products))

@@ -1,26 +1,27 @@
 import React, { useEffect, useState } from 'react'
 import ProductCard from '../ProductCard/ProductCard';
-import { useAllProducts } from '@/hooks/general/useAllProducts';
 import { useSearchParams } from 'react-router-dom';
 import { PaginationCN } from '../Pagination';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchProductsForPage } from '@/store/slices/paginSlice';
 
 function Featured() {
 
   const [queryParams, setQueryParams] = useSearchParams()
   const keyword = queryParams.get('keyword') || '';
   const [parms, setParms] = useState(keyword)
+  const dispatch = useDispatch()
+  const isLoading = useSelector(state => state.pagin.isLoading)
+  const productData = useSelector(state => state.pagin.productData)
 
   useEffect(() => {
     setParms(keyword)
   }, [keyword])
 
 
-  const { isLoading, data } = useAllProducts({ keyword: parms})
-  // console.log('yes xxxxxxthis is params', parms)
-  // console.log('Yes xxxxx this is keyword', keyword)
-
-  // console.log({ data })
-
+  useEffect(() => {
+    dispatch(fetchProductsForPage({ keyword: parms }))
+  }, [parms])
 
 
   return (
@@ -39,22 +40,27 @@ function Featured() {
         </p>
       )}
 
-      <div className='w-full flex flex-col justify-center items-center p-4'>
-        <div className="min-h-full grid m-auto gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 justify-center items-start">
+      <div className='w-full  flex flex-col justify-center items-center p-4'>
+
+     
+
+
           {isLoading ? (
-            <div className='w-full text-center '>
+          <div className="w-full text-center  ">
               <span className="loading loading-spinner loading-lg"></span>
             </div>
           ) : (
-            data.products.map((product, index) => (
-              <div key={index} className="col-span-1">
-                <ProductCard className="ml-auto" data={product} />
-              </div>
-            ))
+            <div className="min-h-full grid gap-8 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-center items-start">
+              {productData.map((product, index) => (
+                <div key={index} className="col-span-1">
+                  <ProductCard className="ml-auto" data={product} />
+                </div>
+              ))}
+            </div>
           )}
+     
 
-        </div>
-        <div className=' text-orange border'>
+        <div className=' text-orange'>
           <PaginationCN />
         </div>
       </div>

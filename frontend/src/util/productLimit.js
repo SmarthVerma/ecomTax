@@ -1,8 +1,6 @@
 
 export const productLimit = () => {
-
-    console.log('HERERE!!!!! HEREEE!!!!', window.innerWidth)
-    if (window.innerWidth < 640) return 1
-    else if (window.innerWidth < 1024) return 4
-    else return 6
+    if (window.innerWidth < 768) return 4; // `sm` screens
+    else if (window.innerWidth < 1024) return 6; // `md` screens
+    else return 8; // `lg` screens and above
 }

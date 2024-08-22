@@ -1,35 +1,46 @@
+// import { CalendarIcon } from "@radix-ui/react-icons"
+
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
+    Avatar,
+    AvatarFallback,
+    AvatarImage,
+} from "@/components/ui/avatar"
+import { Button } from "@/components/ui/button"
+import {
+    HoverCard,
+    HoverCardContent,
+    HoverCardTrigger,
+} from "@/components/ui/hover-card"
 
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { useLogoutUser } from "@/hooks/useLogoutUser"
-import { FaUser } from "react-icons/fa"
-import { Link, useNavigate } from "react-router-dom"
-
-export function NavbarUser() {
-    const navigate = useNavigate()
-    const {mutate: logout} = useLogoutUser()
-
+ function NavbarUser() {
     return (
-        <DropdownMenu>
-            <DropdownMenuTrigger className="p-3">
-                <FaUser className="text-2xl" />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-28 bg-gray-900 flex flex-col  text-white border-none">
-                <DropdownMenuItem>
-                    <button type="button" className="flex-1 ml-auto" onClick={() => navigate('/profile')} >
-                    Profile
-                    </button>
-                </DropdownMenuItem>
-                <DropdownMenuItem className=' bg-red-700 font-bold'>
-                    <button type="button" className="flex-1" onClick={ () => logout()}>
-                    Log out
-                    </button>
-                </DropdownMenuItem>
-            </DropdownMenuContent>
-        </DropdownMenu>
+        <HoverCard>
+            <HoverCardTrigger asChild>
+                <Button variant="link">@nextjs</Button>
+            </HoverCardTrigger>
+            <HoverCardContent className="w-80">
+                <div className="flex justify-between space-x-4">
+                    <Avatar>
+                        <AvatarImage src="https://github.com/vercel.png" />
+                        <AvatarFallback>VC</AvatarFallback>
+                    </Avatar>
+                    <div className="space-y-1">
+                        <h4 className="text-sm font-semibold">@nextjs</h4>
+                        <p className="text-sm">
+                            The React Framework – created and maintained by @vercel.
+                        </p>
+                        <div className="flex items-center pt-2">
+                            {/* <CalendarIcon className="mr-2 h-4 w-4 opacity-70" />{" "} */}
+                            <span className="text-xs text-muted-foreground">
+                                Joined December 2021
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </HoverCardContent>
+        </HoverCard>
     )
 }
+
+
+export { NavbarUser }

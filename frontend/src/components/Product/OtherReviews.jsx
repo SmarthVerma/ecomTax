@@ -11,7 +11,7 @@ export default function OtherReviews({ reviews }) {
         activeColor: "#FAA41F"
     }
 
-    console.log('this is a reviews', reviews)
+    // console.log('this is a reviews', reviews)
     return (
 
         <>

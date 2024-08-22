@@ -15,7 +15,8 @@ function Product() {
 
     const { isLoading, data: product } = useGetProduct(params.id)
 
-
+    console.log({product})
+    
     if (isLoading) return (
         <div className='w-full min-h-screen flex items-center justify-center'>
             <span className="loading text-white loading-spinner loading-lg"></span>

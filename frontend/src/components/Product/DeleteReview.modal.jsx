@@ -27,7 +27,7 @@ const DeleteReviewModal = ({ rev, closeModal }) => {
                 className='bg-[#646160] hover:bg-[#4e4b4b] text-lg font-bold px-3 py-3 rounded-md text-white'
                 onClick={() => handleModalOpen()}
             >
-                Write review
+                Delete review
             </button>
 
             {showModal && (

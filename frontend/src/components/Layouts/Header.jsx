@@ -11,7 +11,7 @@ import ReturnOrders from './Return-Orders';
 
 const getNavLinkClass = (isActive) =>
     `block py-2 pr-4 pl-3 ${isActive ? 'text-orange-300' : 'text-gray-400'
-    } duration-200 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-orange-400 lg:p-0`;
+    } duration-200 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-orange-400 lg:p-0 cursor-pointer`;
 
 const Header = (props, ref) => {
 
@@ -25,13 +25,13 @@ const Header = (props, ref) => {
                 </div>
                 <div className='flex space-x-5'>
 
-                    <Link to="/" className="flex items-center text-4xl">
+                    <Link to="/" className="flex items-center cursor-pointer text-4xl">
                         <TaxEcomLogo />
                     </Link>
                     <div>
                     </div>
 
-                    <ul className="hidden md:hidden lg:flex lg:items-center lg:justify-center xl:gap-5 lg:gap-2 md:gap-1 h-full my-auto self-center justify-self-center font-medium lg:text-base xl:text-xl">                        <li>
+                    <ul className="hidden  md:hidden lg:flex lg:items-center lg:justify-center xl:gap-5 lg:gap-2 md:gap-1 h-full my-auto self-center justify-self-center font-medium lg:text-base xl:text-xl">                        <li>
                         <NavLink to="/" className={({ isActive }) => getNavLinkClass(isActive)}>
                             Home
                         </NavLink>

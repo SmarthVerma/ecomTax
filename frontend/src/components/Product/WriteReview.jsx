@@ -1,13 +1,19 @@
 import { useCreateEditReview } from "@/hooks/user/useCreateEditReview";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from 'react-hot-toast';
 import { useParams } from 'react-router-dom';
 import ReactStars from 'react-stars'
 
-const WriteReview = () => {
+const WriteReview = ({ myReview }) => {
+    // Set default values for rating and comment from myReview
+    const defaultValues = {
+        rating: myReview?.rating || 0,  // Default to 0 if myReview.rating is undefined
+        comment: myReview?.comment || ""
+    };
 
-    const { register, handleSubmit, setValue } = useForm();
-    const [rating, setRating] = useState(0); // State to hold the rating value
+    const { register, handleSubmit, setValue } = useForm({ defaultValues });
+    const [rating, setRating] = useState(myReview.rating); // State to hold the rating value
     const { mutate: createEditReview } = useCreateEditReview()
     const { id } = useParams()
 
@@ -41,7 +47,7 @@ const WriteReview = () => {
                 <form onSubmit={handleSubmit(handleWriteReview)}>
                     <div className="mb-4">
                         <div className='flex p-4 justify-center '>
-                            <div className='flex flex-col gap-4'>\
+                            <div className='flex flex-col gap-4'>
                                 <div className='flex flex-col justify-center items-center gap-2'>
                                     <label className='font-bold text-xl ' htmlFor="rating">Overall rating</label>
                                     <div className="divider m-0 h-0"></div>

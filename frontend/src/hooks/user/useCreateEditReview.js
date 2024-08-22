@@ -28,6 +28,7 @@ const useCreateEditReview = () => {
     }, {
         onSuccess: () => {
             toast.success('Review updated successfully');
+            location.reload()
         },
         onError: (error) => {
             toast.error(error.message || 'An error occurred');

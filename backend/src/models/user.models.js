@@ -48,7 +48,7 @@ const userSchema = new Schema({
                     type: Date,
                     default: Date.now
                 },
-                item: {
+                items: {
                     type: Number,
                     default: 1
                 }

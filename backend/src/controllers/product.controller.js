@@ -307,7 +307,7 @@ const deleteReview = asyncHandler(async (req, res, next) => {
 const addToCart = asyncHandler(async (req, res, next) => {
     const { productId } = req.params;
     const { _id: userId } = req.user;
-    const items = req.body;
+    const {items: itemsTobuy} = req.body;
 
     // find the product in the dataBase
     const product = await Product.findById(productId)
@@ -319,14 +319,14 @@ const addToCart = asyncHandler(async (req, res, next) => {
 
     if (isAlreadyInCart) {
         return res.status(200)
-            .json(new ApiResponse(200, null ,  "Already exist in cart"));
+            .json(new ApiResponse(200, null, "Already exist in cart"));
     }
 
     user.inCart.items.push({
-        productId: productId
+        productId: productId,
+        items: itemsTobuy
     });
 
-    console.log('this is the user', user)
 
     await user.save({ validtateBeforeSave: false })
 
@@ -343,18 +343,18 @@ const deleteFromCart = asyncHandler(async (req, res, next) => {
     if (!product) throw new ApiError(404, "Can't add to cart, Product not found");
 
     const isAlreadyInCart = user.inCart.items.some((prod) => prod.productId == productId)
-    
+
     if (!isAlreadyInCart) {
         return res.status(200)
             .json(new ApiResponse(200, null, "Cant delete, cant find product in cart"));
     }
 
-    const newItems = user.inCart.items.filter((prod)=> prod.productId!= productId)
+    const newItems = user.inCart.items.filter((prod) => prod.productId != productId)
     console.log('this is new item', newItems)
 
     user.inCart.items = newItems;
 
-    await user.save({validateBeforeSave: false})
+    await user.save({ validateBeforeSave: false })
 
     return res.status(200)
         .json(new ApiResponse(200, user.inCart, "successfully deleted"));

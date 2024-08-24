@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken'
 import crypto from 'crypto' // research on it
 
 
+
 const userSchema = new Schema({
 
     name: {
@@ -35,17 +36,36 @@ const userSchema = new Schema({
             required: true
         },
     },
+    inCart: {
+        items: [
+            {
+
+                productId: {
+                    type: Schema.Types.ObjectId,
+                    ref: "Product"
+                },
+                addedAt: {
+                    type: Date,
+                    default: Date.now
+                },
+                item: {
+                    type: Number,
+                    default: 1
+                }
+            }
+        ]
+    },
     role: {
         type: String,
-        default: "user" 
+        default: "user"
     },
     refreshToken: {
         type: String,
-    },              
+    },
     resetPasswordToken: String,
     resetPasswordExpire: Date,
 
-}, {timestamps: true})
+}, { timestamps: true })
 
 userSchema.pre("save", async function (next) {
     if (!this.isModified("password")) return next();
@@ -67,8 +87,8 @@ userSchema.methods.getResetPasswordToken = function () {
         .createHash("sha256")
         .update(resetToken)
         .digest("hex")
-    this.resetPasswordExpire = Date.now() + 15*60*1000 // 15 min ki expiry time
-    
+    this.resetPasswordExpire = Date.now() + 15 * 60 * 1000 // 15 min ki expiry time
+
     return resetToken;
 }
 

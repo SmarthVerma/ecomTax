@@ -5,6 +5,7 @@ import { Product } from "../models/product.models.js";
 import { ApiFeatures } from "../utils/ApiFeatures.js";
 import mongoose from "mongoose";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import { User } from "../models/user.models.js";
 
 const getAllProducts = asyncHandler(async (req, res, next) => {
     console.log(`req.query`, req.query)
@@ -303,6 +304,89 @@ const deleteReview = asyncHandler(async (req, res, next) => {
     res.status(200).json(new ApiResponse(200, { afterDeleted: product }, "Deleted Successfully"));
 });
 
+const addToCart = asyncHandler(async (req, res, next) => {
+    const { productId } = req.params;
+    const { _id: userId } = req.user;
+    const items = req.body;
+
+    // find the product in the dataBase
+    const product = await Product.findById(productId)
+    if (!product) throw new ApiError(404, "Can't add to cart, Product not found");
+
+    const user = await User.findById(userId)
+
+    const isAlreadyInCart = user.inCart.items.some((prod) => prod.productId == productId)
+
+    if (isAlreadyInCart) {
+        return res.status(200)
+            .json(new ApiResponse(200, null ,  "Already exist in cart"));
+    }
+
+    user.inCart.items.push({
+        productId: productId
+    });
+
+    console.log('this is the user', user)
+
+    await user.save({ validtateBeforeSave: false })
+
+    return res.status(200)
+        .json(new ApiResponse(200, user.inCart, "Successfully added to cart"));
+
+})
+
+const deleteFromCart = asyncHandler(async (req, res, next) => {
+    const { productId } = req.params;
+    const user = req.user;
+
+    const product = await Product.findById(productId)
+    if (!product) throw new ApiError(404, "Can't add to cart, Product not found");
+
+    const isAlreadyInCart = user.inCart.items.some((prod) => prod.productId == productId)
+    
+    if (!isAlreadyInCart) {
+        return res.status(200)
+            .json(new ApiResponse(200, null, "Cant delete, cant find product in cart"));
+    }
+
+    const newItems = user.inCart.items.filter((prod)=> prod.productId!= productId)
+    console.log('this is new item', newItems)
+
+    user.inCart.items = newItems;
+
+    await user.save({validateBeforeSave: false})
+
+    return res.status(200)
+        .json(new ApiResponse(200, user.inCart, "successfully deleted"));
+})
+
+const getCartItems = asyncHandler(async (req, res, next) => {
+    console.log('helloooo??')
+    const { _id: userId } = req.user;
+
+    // Fetch user from the database
+    const user = await User.findById(userId);
+    if (!user) throw new ApiError(404, "User not found");
+
+    console.log('checker')
+    // Get productIds from the cart items
+    const cartProductIds = user.inCart.items.map((item) => item.productId);
+
+    console.log("check the arary,", cartProductIds)
+    // Fetch product details for all productIds in the cart
+    const cartProducts = await Product.find({ _id: { $in: cartProductIds } });
+
+    console.log('cartProducts', cartProducts)
+
+    if (cartProducts.length === 0) {
+        return res.status(404)
+            .json(new ApiResponse(404, null, "No products found in the cart"));
+    }
+
+    return res.status(200)
+        .json(new ApiResponse(200, cartProducts, "Cart items fetched successfully"));
+});
+
 export {
     getAllProducts,
     createProduct,
@@ -311,5 +395,8 @@ export {
     getProduct,
     createEditReview,
     deleteReview,
-    getAllReviews
+    getAllReviews,
+    addToCart,
+    deleteFromCart,
+    getCartItems
 }

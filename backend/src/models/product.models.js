@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 
-const productSchema = new Schema(
+ const productSchema = new Schema(
     {
 
         name: {

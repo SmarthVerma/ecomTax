@@ -7,7 +7,10 @@ import {
     getAllProducts,
     getAllReviews,
     getProduct,
-    updateProduct
+    updateProduct,
+    addToCart,
+    deleteFromCart,
+    getCartItems
 } from "../controllers/product.controller.js";
 import { verifyAuth, authorizeRoles } from '../middlewares/auth.middleware.js'
 import { upload } from "../middlewares/multer.middleware.js";
@@ -26,6 +29,10 @@ router.route('/admin/:id')
     .delete(verifyAuth, authorizeRoles("admin"), deleteProduct)
 
 router.route('/:productId').get(getProduct)
+// Cart
+router.route('/cart/add/:productId').post(verifyAuth, addToCart);
+router.route('/cart/delete/:productId').delete(verifyAuth, deleteFromCart);
+router.route('/cart/items').get(verifyAuth, getCartItems);
 //reviews
 router.route('/reviews/:productId/all').get(getAllReviews)
 router.route("/reviews/:productId")

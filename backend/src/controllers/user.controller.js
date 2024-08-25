@@ -26,7 +26,7 @@ const generateAccessTokenAndRefreshTokens = async (userId) => {
 
         return { accessToken, refreshToken }
     } catch (error) {
-        console.log('error', error)
+       throw new ApiError(400, `some error ${error}`)
     }
 }
 
@@ -34,7 +34,6 @@ const generateAccessTokenAndRefreshTokens = async (userId) => {
 
 const registerUser = asyncHandler2(async (req, res) => {
     const { name, email, password, role } = req.body
-    console.log(req.files)
     if (
         [email, password, name].some((field) => field?.trim() === "")
     ) {
@@ -254,8 +253,6 @@ const changePassword = asyncHandler(async (req, res) => {
 const updateProfile = asyncHandler(async (req, res) => {
     let user = req.user
     const { name, email } = req.body
-    console.log('reqBody', req.body)
-    console.log('reqFiles', req.files)
 
     let newAvatar = undefined
     if (req.files?.avatar) {

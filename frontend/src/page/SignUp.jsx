@@ -1,6 +1,6 @@
 import React from 'react';
 import { useForm } from "react-hook-form";
-import { useRegisterUser } from "../hooks/useRegisterUser";
+import { useRegisterUser } from "../hooks/user/useRegisterUser";
 import { Link } from 'react-router-dom'; // Assuming routing is done with react-router-dom
 import SelectAvatar from '@/components/SelectAvatar';
 
@@ -24,7 +24,7 @@ function SignUp() {
 
 
                 <form onSubmit={handleSubmit(handleSignup)} className='space-y-4'>
-                  {/* Avatar input */}
+                    {/* Avatar input */}
                     <div className='flex justify-center mb-6'>
                         <SelectAvatar
                             profileSrc={avatar} // Controlled value from form

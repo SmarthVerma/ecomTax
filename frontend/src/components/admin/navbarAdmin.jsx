@@ -1,12 +1,12 @@
 import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import TaxEcomLogo from '../TaxEcomLogo';
-import { useLogoutUser } from '@/hooks/useLogoutUser';
+import { useLogoutUser } from '@/hooks/user/useLogoutUser';
 import AdminHamburger from "../admin/AdminHamburger";
 
 function NavbarAdmin() {
 
-    const {mutate: logout} = useLogoutUser()
+    const { mutate: logout } = useLogoutUser()
     const handleLogout = () => {
         logout()
     }
@@ -18,10 +18,10 @@ function NavbarAdmin() {
                     <TaxEcomLogo />
                 </NavLink>
                 <div className="flex md:order-2 space-x-3 rtl:space-x-reverse">
-                    <button 
-                    type="button" 
-                    className="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-4 py-2"
-                    onClick={() => handleLogout()}
+                    <button
+                        type="button"
+                        className="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-4 py-2"
+                        onClick={() => handleLogout()}
                     >
                         Log out
                     </button>

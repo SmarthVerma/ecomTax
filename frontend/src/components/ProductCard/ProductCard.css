@@ -43,7 +43,7 @@
     color: #fff;
 }
 
-.product-card:hover .add-button {
+.add-button:hover {
     color: #000;
     background-color: #fff;
 }

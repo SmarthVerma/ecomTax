@@ -39,7 +39,6 @@ const userSchema = new Schema({
     inCart: {
         items: [
             {
-
                 productId: {
                     type: Schema.Types.ObjectId,
                     ref: "Product"
@@ -48,7 +47,7 @@ const userSchema = new Schema({
                     type: Date,
                     default: Date.now
                 },
-                items: {
+                amount: {
                     type: Number,
                     default: 1
                 }

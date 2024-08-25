@@ -1,46 +1,45 @@
-// import { CalendarIcon } from "@radix-ui/react-icons"
-
 import {
     Avatar,
     AvatarFallback,
     AvatarImage,
-} from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
+} from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import {
     HoverCard,
     HoverCardContent,
     HoverCardTrigger,
-} from "@/components/ui/hover-card"
+} from "@/components/ui/hover-card";
+import { useAuthContext } from "@/context/AuthContext";
 
- function NavbarUser() {
+function NavbarUser() {
+    const { isLoading, data: user } = useAuthContext();
+
+    if (isLoading) {
+        return <p>Loading...</p>; // Handle loading state
+    }
+
     return (
         <HoverCard>
             <HoverCardTrigger asChild>
-                <Button variant="link">@nextjs</Button>
-            </HoverCardTrigger>
-            <HoverCardContent className="w-80">
-                <div className="flex justify-between space-x-4">
+                <Button variant="link">
                     <Avatar>
-                        <AvatarImage src="https://github.com/vercel.png" />
-                        <AvatarFallback>VC</AvatarFallback>
+                        <AvatarImage src={user.avatar.url} alt="User Avatar" />
+                        <AvatarFallback>user</AvatarFallback>
                     </Avatar>
-                    <div className="space-y-1">
-                        <h4 className="text-sm font-semibold">@nextjs</h4>
-                        <p className="text-sm">
-                            The React Framework – created and maintained by @vercel.
-                        </p>
-                        <div className="flex items-center pt-2">
-                            {/* <CalendarIcon className="mr-2 h-4 w-4 opacity-70" />{" "} */}
-                            <span className="text-xs text-muted-foreground">
-                                Joined December 2021
-                            </span>
-                        </div>
-                    </div>
+                </Button>
+            </HoverCardTrigger>
+            <HoverCardContent className="w-80 p-4 bg-gray-800 text-white rounded-lg shadow-lg">
+                <div className="mt-4 flex flex-col space-y-2">
+                    <Button variant="outline" className="w-full bg-gray-700 hover:bg-gray-600 text-white">
+                        Your Account
+                    </Button>
+                    <Button variant="outline" className="w-full bg-red-600 hover:bg-red-500 text-white">
+                        Logout
+                    </Button>
                 </div>
             </HoverCardContent>
         </HoverCard>
-    )
+    );
 }
 
-
-export { NavbarUser }
+export { NavbarUser };

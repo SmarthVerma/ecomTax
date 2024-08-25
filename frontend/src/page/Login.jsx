@@ -1,4 +1,4 @@
-import { useLoginUser } from '@/hooks/useLoginUser';
+import { useLoginUser } from '@/hooks/user/useLoginUser';
 import React from 'react';
 import { useForm } from "react-hook-form";
 import { Link } from 'react-router-dom'; // Assuming you use react-router-dom for routing

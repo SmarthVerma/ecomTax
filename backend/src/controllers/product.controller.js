@@ -8,8 +8,6 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { User } from "../models/user.models.js";
 
 const getAllProducts = asyncHandler(async (req, res, next) => {
-    console.log(`req.query`, req.query)
-    console.log(`req.param`, req.params)
 
     const apiFeature = new ApiFeatures(Product.find(), req.query)
         .search()
@@ -24,7 +22,6 @@ const getAllProducts = asyncHandler(async (req, res, next) => {
     const products = await apiFeature.query
     const noOfProducts = await noOfProd.query
 
-    console.log('this is the total produts in apiFeatures', noOfProducts)
 
 
     const productCount = await Product.aggregate([
@@ -36,7 +33,6 @@ const getAllProducts = asyncHandler(async (req, res, next) => {
         }
     ]);
 
-    // console.log(productCount[0]?.count); // This will give you the total count of products
 
     const totalProducts = productCount[0]?.count || 0
 
@@ -57,33 +53,27 @@ const createProduct = asyncHandler(async (req, res, next) => {
     const createdBy = req.user._id
     const images = []; // to push
 
-    console.log('req.body', req.body)
-    console.log('req.files', req.files)
 
     let numberPrice = parseInt(price)
 
     const numOfFiles = req.files?.images?.length
 
     if (numOfFiles == undefined) throw new ApiError(400, "Select atleast 1 image of product")
-    console.log('num of files', numOfFiles)
 
     // no of times we have to upload on cloudinary
     for (let i = 0; i < numOfFiles; i++) {
         const imageLocalPath = req.files?.images[i]?.path
         if (!imageLocalPath) throw new ApiError(500, "Error reading local path of images")
-        console.log(`Image no ${i} path: ${imageLocalPath}`)
 
         //  uploading to cloudinary
         const img = await uploadOnCloudinary(imageLocalPath)
         if (!img) throw new ApiError(500, "Something went wrong while uploading img of product on cloudinary try again")
-        console.log('this is response from cloudinary', img)
         images.push({
             public_ID: img.public_id,
             url: img.url
         })
     }
 
-    console.log('This is the final array of images', images)
     const product = await Product.create(
         {
             name,
@@ -102,7 +92,6 @@ const createProduct = asyncHandler(async (req, res, next) => {
 })
 
 const updateProduct = asyncHandler2(async (req, res, next) => {
-    console.log(`reqParams: `, req.params)
     const { id } = req.params
     const data = req.body
 
@@ -129,7 +118,6 @@ const updateProduct = asyncHandler2(async (req, res, next) => {
 })
 
 const deleteProduct = asyncHandler2(async (req, res, next) => {
-    console.log(`reqParams: `, req.params)
     const { id } = req.params
 
     const product_id = await Product.findById(id)
@@ -232,8 +220,6 @@ const createEditReview = asyncHandler(async (req, res, next) => {
     // Update product ratings and review count
     product.ratings = avgRatings[0]?.ratings || 0;
     product.numOfReviews = numOfReviews[0]?.numOfReviews || 0
-    console.log('No of reviews', numOfReviews)
-    console.log('No of reviews', avgRatings)
 
 
     // Save the updated product
@@ -292,7 +278,6 @@ const deleteReview = asyncHandler(async (req, res, next) => {
         product.ratings = 0;
         product.numOfReviews = 0;
     } else {
-        console.log('this is really stupod bug', avgRatings)
         product.ratings = avgRatings[0].ratings;
         product.numOfReviews = avgRatings[0].numOfReviews;
     }
@@ -307,7 +292,7 @@ const deleteReview = asyncHandler(async (req, res, next) => {
 const addToCart = asyncHandler(async (req, res, next) => {
     const { productId } = req.params;
     const { _id: userId } = req.user;
-    const {items: itemsTobuy} = req.body;
+    const { amount: itemsTobuy } = req.body;
 
     // find the product in the dataBase
     const product = await Product.findById(productId)
@@ -318,13 +303,21 @@ const addToCart = asyncHandler(async (req, res, next) => {
     const isAlreadyInCart = user.inCart.items.some((prod) => prod.productId == productId)
 
     if (isAlreadyInCart) {
+        const idx = user.inCart.items.findIndex((prod) => prod.productId == productId)
+        console.log('this is the idx', idx, 'and this is the amount', itemsTobuy)
+        user.inCart.items[idx] = {
+            productId: productId,
+            amount: Number(itemsTobuy)
+        }
+        console.log('this is the user rn', user.inCart)
+        await user.save({ validtateBeforeSave: false })
         return res.status(200)
-            .json(new ApiResponse(200, null, "Already exist in cart"));
+            .json(new ApiResponse(200, user.inCart, "Updated the already exist in cart"));
     }
 
     user.inCart.items.push({
         productId: productId,
-        items: itemsTobuy
+        amount: itemsTobuy
     });
 
 
@@ -350,7 +343,6 @@ const deleteFromCart = asyncHandler(async (req, res, next) => {
     }
 
     const newItems = user.inCart.items.filter((prod) => prod.productId != productId)
-    console.log('this is new item', newItems)
 
     user.inCart.items = newItems;
 
@@ -361,30 +353,40 @@ const deleteFromCart = asyncHandler(async (req, res, next) => {
 })
 
 const getCartItems = asyncHandler(async (req, res, next) => {
-    console.log('helloooo??')
     const { _id: userId } = req.user;
 
-    // Fetch user from the database
-    const user = await User.findById(userId);
-    if (!user) throw new ApiError(404, "User not found");
+    // Use aggregation to combine user cart items with product details
+    const userCart = await User.aggregate([
+        { $match: { _id: userId } },
+        { $unwind: "$inCart.items" },
+        {
+            $lookup: {
+                from: "products", // The collection name in the database
+                localField: "inCart.items.productId",
+                foreignField: "_id",
+                as: "productDetails"
+            }
+        },
+        { $unwind: "$productDetails" },
+        {
+            $project: {
+                _id: 0,
+                product: "$productDetails",
+                amount: "$inCart.items.amount"
+            }
+        }
+    ]);
 
-    console.log('checker')
-    // Get productIds from the cart items
-    const cartProductIds = user.inCart.items.map((item) => item.productId);
-
-    console.log("check the arary,", cartProductIds)
-    // Fetch product details for all productIds in the cart
-    const cartProducts = await Product.find({ _id: { $in: cartProductIds } });
-
-    console.log('cartProducts', cartProducts)
-
-    if (cartProducts.length === 0) {
+    if (!userCart.length) {
         return res.status(404)
             .json(new ApiResponse(404, null, "No products found in the cart"));
     }
 
     return res.status(200)
-        .json(new ApiResponse(200, cartProducts, "Cart items fetched successfully"));
+        .json(new ApiResponse(200, {
+            cartData: userCart,
+            totalItems: userCart.length
+        }, "Cart items fetched successfully"));
 });
 
 export {

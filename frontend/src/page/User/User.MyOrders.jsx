@@ -1,7 +1,7 @@
 import React from 'react';
 import OrderCard from '../../components/user/OrderCard';
 import findNavHeight from '@/util/findNavHeight';
-import { useGetMyOrders } from '@/hooks/useGetMyOrders';
+import { useGetMyOrders } from '@/hooks/user/useGetMyOrders';
 
 
 export default function MyOrders() {

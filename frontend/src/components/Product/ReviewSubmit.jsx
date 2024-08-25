@@ -17,7 +17,7 @@ export default function ReviewSubmit({ reviews }) {
       // Check if there is any review created by the user
       const result = reviewsArray.find((rev) => rev.createdBy === _id);
       setIsReviewed(result);
-      console.log(result, ' this is the review result')
+
 
       if (result) {
         // Find the specific review created by the user

@@ -1,5 +1,7 @@
 import { useGetUserDetails } from "@/hooks/general/useGetUserDetails";
-import { createContext, useContext } from "react";
+import { fetchCartItems } from "@/store/slices/cartSlice";
+import { createContext, useContext, useEffect } from "react";
+import { useDispatch } from "react-redux";
 
 
 const AuthContext = createContext({
@@ -13,6 +15,11 @@ export const useAuthContext = () => {
 
 export const AuthContextProvider = ({ children }) => {
     const { isLoading, data } = useGetUserDetails()
+    const dispatch = useDispatch()
+    useEffect(() => {
+        dispatch(fetchCartItems())
+    }, [dispatch])
+    
 
     return (<AuthContext.Provider value={{isLoading, data}}>
         {children}

@@ -18,7 +18,7 @@ const Header = (props, ref) => {
     const { isLoading, data: user } = useAuthContext()
 
     return (
-        <header ref={ref} id='header' className="shadow fixed z-40 top-0 left-0 right-0 bg-gray-800 flex justify-center">
+        <header ref={ref} id='header' className="shadow-xl fixed z-40 top-0 left-0 right-0 bg-gray-800 flex justify-center border-b border-gray-600/30">
             <nav className=" container  text-white flex justify-evenly lg:justify-start gap-x-2 lg:gap-x-9  items-center border-gray-200 py-2 px-4 lg:px-6">
                 <div className='flex lg:hidden text-3xl cursor-pointer'>
                     <Hamburger side={'left'} />
@@ -75,7 +75,7 @@ const Header = (props, ref) => {
                     </div>
 
                 </div>
-                <div>
+                <div className='flex items-center justify-center'>
                     {user ? (
 
                         <NavbarUser />

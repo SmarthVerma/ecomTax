@@ -1,13 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useAuthContext } from "@/context/AuthContext";
 import WriteReview from './WriteReview';
 import DeleteReviewModal from './DeleteReview.modal';
+import { useSelector } from 'react-redux';
 
 export default function ReviewSubmit({ reviews }) {
   const [showForm, setShowForm] = useState(false);
   const [isReviewed, setIsReviewed] = useState(false);
   const [myReview, setMyReview] = useState(null);
-  const { data } = useAuthContext(); // Assuming this provides user data
+  const data = useSelector(state => state.user.data)
 
   const isReview = useCallback(() => {
     if (data && reviews) {

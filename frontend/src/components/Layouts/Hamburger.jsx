@@ -6,11 +6,13 @@ import { IoMdContacts } from "react-icons/io";
 import { MdAdminPanelSettings } from "react-icons/md";
 import { FaDiscord } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import { useAuthContext } from '@/context/AuthContext';
+import { useSelector } from 'react-redux';
 
 
 const Hamburger = ({ side }) => {
-    const { isLoading, data: user } = useAuthContext()
+
+    const user = useSelector(state => state.user.data)
+
     return (
         <Sheet key={side}>
             <SheetTrigger asChild>

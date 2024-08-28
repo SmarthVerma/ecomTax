@@ -8,6 +8,9 @@ export default function Cart() {
     const navHeight = findNavHeight();
     const cartItems = useSelector(state => state.cart.cartData);
     const totalCartItems = useSelector(state => state.cart.totalItems);
+  console.log('cartItems', cartItems)
+    
+
 
     return (
 

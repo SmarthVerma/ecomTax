@@ -4,21 +4,22 @@ import { useDispatch } from 'react-redux';
 import { deleteCartItem } from '@/store/slices/cartSlice';
 
 export default function CartCard({ data }) {
-  const amount = data?.amount
-  const productId = data?.product._id
-  const dispatch = useDispatch()
+  const amount = data?.amount;
+  const productId = data?.productId;
+  console.log('Data checker', data);
+  const dispatch = useDispatch();
 
   const handleDeleteItem = () => {
-    dispatch(deleteCartItem({ productId }))
-  }
+    dispatch(deleteCartItem({ productId }));
+  };
 
   return (
     <div className='cardCart cursor-pointer w-full h-auto flex gap-4 bg-gray-800 rounded-lg shadow-lg overflow-hidden'>
       {/* Product Image */}
       <div className='shrink-0 w-[21ch] border h-full border-r border-gray-700'>
         <img
-          className=' h-full object-scale-down rounded-l-lg'
-          src={data.product.images[0].url}
+          className='h-full object-scale-down rounded-l-lg'
+          src={data?.product?.images?.[0]?.url}
           alt={data?.product?.name || "Product image"}
         />
       </div>
@@ -42,7 +43,7 @@ export default function CartCard({ data }) {
           <button
             className='mt-2 text-xs text-red-500 hover:text-red-600 hover:underline'
             aria-label='Delete item'
-            onClick={() => handleDeleteItem()}
+            onClick={handleDeleteItem}
           >
             Delete this
           </button>
@@ -52,12 +53,12 @@ export default function CartCard({ data }) {
       {/* Price Details */}
       <div className='shrink-0 w-[20ch] p-4 flex flex-col items-end bg-gray-700'>
         <p className='text-gray-300 text-sm'>Price</p>
-        <p className='text-lg text-gray-100'>₹ <span className='font-semibold'>{data.product.price}</span></p>
+        <p className='text-lg text-gray-100'>₹ <span className='font-semibold'>{data?.product?.price}</span></p>
         <div className='mt-auto mr-auto'>
           <p className='text-base text-gray-100'>
             Subtotal ({amount} items):
           </p>
-          <span className='font-bold'>₹ {amount * (data.product.price)} </span>
+          <span className='font-bold'>₹ {amount * (data?.product?.price || 0)} </span>
         </div>
       </div>
     </div>

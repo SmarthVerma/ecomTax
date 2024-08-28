@@ -1,13 +1,12 @@
 import React, { useEffect, useMemo } from 'react';
 import Welcome from "../components/Home/Welcome";
 import Featured from '../components/Home/Featured';
-import { useGetUserDetails } from '@/hooks/general/useGetUserDetails';
-import { useAuthContext } from '@/context/AuthContext';
 import toast from 'react-hot-toast';
+import { useSelector } from 'react-redux';
 
 function Home() {
-    useGetUserDetails();
-    const { isLoading, data } = useAuthContext();
+    // const { isLoading, data } = useAuthContext();
+    const data = useSelector(state => state.user.data)
     useMemo(() => {
         if (data?.name) {
             // toast.success('Welcome ' + data.name);

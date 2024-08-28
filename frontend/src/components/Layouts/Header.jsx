@@ -5,17 +5,19 @@ import TaxEcomLogo from '../TaxEcomLogo';
 import Hamburger from './Hamburger';
 import CartOrders from './CartOrders';
 import SearchForm from '../Search';
-import { useAuthContext } from '@/context/AuthContext';
 import { NavbarUser } from '../user/NavbarUser';
 import ReturnOrders from './Return-Orders';
+import { useSelector } from 'react-redux';
 
 const getNavLinkClass = (isActive) =>
     `block py-2 pr-4 pl-3 ${isActive ? 'text-orange-300' : 'text-gray-400'
-    } duration-200 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-orange-400 lg:p-0 cursor-pointer`;
+    } duration-200 border-b border-gray-100 hover:bg-grap[y-50 lg:hover:bg-transparent lg:border-0 hover:text-orange-400 lg:p-0 cursor-pointer`;
 
 const Header = (props, ref) => {
 
-    const { isLoading, data: user } = useAuthContext()
+    const user = useSelector(state => state.user.data)
+
+
 
     return (
         <header ref={ref} id='header' className="shadow-xl fixed z-40 top-0 left-0 right-0 bg-gray-800 flex justify-center border-b border-gray-600/30">

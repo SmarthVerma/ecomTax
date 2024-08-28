@@ -3,15 +3,16 @@ import Logout from "../../components/user/Logout";
 import ChangePassword from '@/components/user/ChangePassword';
 import EditProfile from '@/components/user/EditProfile';
 import Loader from '@/components/Loading/Loader';
-import { useAuthContext } from '@/context/AuthContext';
 import BackButton from '@/components/BackButton';
 import formatDate from '@/util/formatDateString';
+import { useSelector } from 'react-redux';
 
 export default function UserProfile() {
 
-  const { isLoading, data, isError, error } = useAuthContext()
 
-  console.log({ isLoading, data, isError, error })
+  const {isLoading, data } = useSelector(state => state.user)
+
+  
   console.log('in user', data?.avatar.url)
   if (isLoading) return <Loader />
 

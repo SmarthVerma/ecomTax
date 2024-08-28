@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
-import { useAuthContext } from '@/context/AuthContext';
+import { useSelector } from 'react-redux';
 
 const ReturnOrders = () => {
-    const { isLoading, data: user } = useAuthContext();
+    const {isLoading, data: user} = useSelector(state => state.user)
 
     return (
         <>

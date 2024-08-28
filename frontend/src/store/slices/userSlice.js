@@ -1,52 +1,43 @@
+// src/store/slices/userSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import toast from 'react-hot-toast';
 
-export const fetchInfo = createAsyncThunk("fetchInfo", async () => {
-    const url = "/api/v1/user/profile"
-    console.log('Running createAsync',)
-    try {
-        const response = await axios.get(url);
-        console.log('useFetched successful:', response.data);
-
-        toast.success('Welcome ' + response.data.data.fullName)
-        return response.data
-    } catch (error) {
-        toast.error(error.response.data.message)
-        throw error
+// Async thunk for fetching user details
+export const fetchUserDetails = createAsyncThunk(
+    'user/fetchUserDetails',
+    async () => {
+        const response = await axios.get('/api/v1/user/profile');
+        return response.data.data;
     }
-})
+);
 
-
+// Initial state for the user slice
 const initialState = {
-    authStatus: false,
     data: null,
     isLoading: false,
-    isError: false,
+    error: null,
 };
 
+// User slice
 const userSlice = createSlice({
     name: 'user',
     initialState,
+    reducers: {},
     extraReducers: (builder) => {
-        builder.addCase(fetchInfo.pending, (state, action) => {
-            state.isLoading = true
-            state.data = null
-            state.authStatus = false
-            state.isError = false
-        }).addCase(fetchInfo.fulfilled, (state, action) => {
-            state.isLoading = false
-            state.data = action.payload
-            state.authStatus = true
-            state.isError = false
-        }).addCase(fetchInfo.rejected, (state, action) => {
-            console.log('Error in slice', action.error.message)
-            state.isLoading = false,
-                state.data = null,
-                state.authStatus = false
-            state.isError = true;
-        })
-    }
+        builder
+            .addCase(fetchUserDetails.pending, (state) => {
+                state.isLoading = true;
+                state.error = null;
+            })
+            .addCase(fetchUserDetails.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.data = action.payload;
+            })
+            .addCase(fetchUserDetails.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.error.message;
+            });
+    },
 });
 
 export default userSlice.reducer;

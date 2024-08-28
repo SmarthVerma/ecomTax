@@ -2,6 +2,7 @@ import { productLimit } from '@/util/productLimit';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { fetchCartItems } from './cartSlice';
 
 // Async thunk to fetch products
 export const storeProductData = createAsyncThunk(
@@ -71,12 +72,14 @@ const paginSlice = createSlice({
     }
 });
 
+
 // *** Combination of paginSlice and AsynchThunk
 export const fetchProductsForPage = ({ keyword, page },) => (dispatch, getState) => {
     console.log('is this working? yayy!!', { keyword, page })
     const state = getState()
     dispatch(pageChange(page))
     dispatch(storeProductData({ keyword }))
+    dispatch(fetchCartItems())
 };
 
 export const { pageChange } = paginSlice.actions;

@@ -1,6 +1,8 @@
+import { fetchUserDetails } from "@/store/slices/userSlice";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useMutation } from "react-query";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 
@@ -27,6 +29,7 @@ const validation = ( {email, password} ) => {
 }
 
 const useLoginUser = () => {
+    const dispatch = useDispatch()
     const navigate = useNavigate()
 
     return useMutation((inputData) => {
@@ -38,6 +41,7 @@ const useLoginUser = () => {
     {
         onSuccess: () => {
             toast.success('Logged in successfully')
+            dispatch(fetchUserDetails())
             navigate('/')
         },
         onError: (error) => {

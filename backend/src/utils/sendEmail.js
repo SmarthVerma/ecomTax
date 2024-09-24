@@ -13,6 +13,7 @@ const sendEmail = async (options) => {
             pass: process.env.SMPT_PASSWORD,
         }
     })
+    
     const mailOptions = {
         from: {
             name: "SammyPammy",

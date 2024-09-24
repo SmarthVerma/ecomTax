@@ -39,11 +39,11 @@ export const addCartItem = createAsyncThunk(
         const state = getState();
         try {
             const userExist = state.user.data;
-
+            const response = await axios.post(url, input);
+            dispatch(fetchCartItems()); // Fetch updated cart after adding item
+            toast.success("Successfully added");
             if (userExist) {
-                const response = await axios.post(url, input);
-                dispatch(fetchCartItems()); // Fetch updated cart after adding item
-                toast.success("Successfully added");
+
                 return response.data.data;
             } else {
                 const cartData = localStorage.getItem('cartData');
@@ -86,6 +86,7 @@ export const deleteCartItem = createAsyncThunk(
         try {
             const userExist = state.user.data;
             if (userExist) {
+                console.log('this is the url,', url)
                 const response = await axios.delete(url);
                 dispatch(fetchCartItems()); // Fetch updated cart after deleting item
                 return response.data.data;
@@ -111,6 +112,8 @@ export const deleteCartItem = createAsyncThunk(
         }
     }
 );
+
+
 
 // Initial state
 const initialState = {

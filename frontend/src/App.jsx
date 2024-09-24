@@ -8,7 +8,6 @@ import FetchAndStore from './components/FetchAndStore';
 const queryClient = new QueryClient();
 
 function App() {
-
   return (
     <QueryClientProvider client={queryClient}>
       <FetchAndStore>

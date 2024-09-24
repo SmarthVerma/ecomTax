@@ -1,5 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom';
-
+import { createBrowserRouter, redirect } from 'react-router-dom';
 
 import {
     AdminAllUsers,
@@ -17,6 +16,7 @@ import {
     UserProfile,
     ForgotPassword,
     ResetPassword,
+    Not_Found
 } from "./page/index";
 
 import Layout from "./Layouts/Layout";
@@ -44,5 +44,6 @@ export const router = createBrowserRouter([
     { path: '/myorders', element: (<Layout> <UserMyOrders /> </Layout>) },
     { path: '/order-detail/:id', element: (<Layout> <UserOrderDetails /> </Layout>) },
     { path: '/cart', element: (<Layout> <UserCart /> </Layout>) },
-    { path: '/address', element: <UserEnterAddress /> }
+    { path: '/address', element: <UserEnterAddress /> },
+    { path: '*', element: <Not_Found /> }
 ]);

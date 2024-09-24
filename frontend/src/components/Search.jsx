@@ -10,6 +10,7 @@ const SearchForm = () => {
     const [queryParams, updateQueryParams] = useSearchParams();
     const navigate = useNavigate()
     const keyword = queryParams.get('keyword')
+
     
     const { handleSubmit, register, setValue } = useForm({
         defaultValues: {
@@ -20,7 +21,7 @@ const SearchForm = () => {
     useEffect(() => {
         setValue('keyword', keyword || ''); // Ensure default value is set
     }, [keyword, setValue]);
-    
+        
 
     const handleSearch = async (data) => {
         console.log(data)

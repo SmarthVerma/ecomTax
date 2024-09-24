@@ -119,7 +119,7 @@ const updateProduct = asyncHandler2(async (req, res, next) => {
 
 const deleteProduct = asyncHandler2(async (req, res, next) => {
     const { id } = req.params
-
+    console.log('this is the id', req.params)
     const product_id = await Product.findById(id)
 
     if (!product_id) throw new ApiError(404, "Product not found")
@@ -389,6 +389,42 @@ const getCartItems = asyncHandler(async (req, res, next) => {
         }, "Cart items fetched successfully"));
 });
 
+const updateCartItemQuantity = asyncHandler(async (req, res, next) => {
+    const { amount } = req.body; // Get new quantity from request body
+    const { productId } = req.params; // Get product ID from request params
+    const { _id: userId } = req.user; // Get user ID from authenticated user
+
+    // Convert amount to a number
+    const nAmount = Number(amount);
+
+    // Validation: Check if the amount is valid
+    if (nAmount <= 0) {
+        throw new ApiError(400, 'Quantity must be greater than zero');
+    }
+
+    // Find the user and their cart
+    const user = await User.findById(userId);
+    if (!user) {
+        throw new ApiError(404, 'User not found');
+    }
+
+    // Find the item in the user's cart
+    const cartItem = user.inCart.items.find(item => item.productId.toString() === productId);
+    if (!cartItem) {
+        throw new ApiError(404, 'Product not found in cart');
+    }
+
+    // Update the quantity
+    cartItem.amount = nAmount;
+
+    // Save the updated cart
+    await user.save({ validateBeforeSave: false });
+
+    return res.status(200).json(new ApiResponse(200, user.inCart, 'Cart item updated successfully'));
+});
+
+
+
 export {
     getAllProducts,
     createProduct,
@@ -400,5 +436,6 @@ export {
     getAllReviews,
     addToCart,
     deleteFromCart,
-    getCartItems
+    getCartItems,
+    updateCartItemQuantity
 }

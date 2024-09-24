@@ -4,12 +4,14 @@ import { useDispatch } from 'react-redux';
 import { deleteCartItem } from '@/store/slices/cartSlice';
 
 export default function CartCard({ data }) {
+  console.log('this is data', data)
   const amount = data?.amount;
-  const productId = data?.productId;
+  const productId = data?.product._id;
   console.log('Data checker', data);
   const dispatch = useDispatch();
 
   const handleDeleteItem = () => {
+    console.log('this is the data', productId)
     dispatch(deleteCartItem({ productId }));
   };
 
@@ -39,7 +41,7 @@ export default function CartCard({ data }) {
           </label>
         </div>
         <div className='flex items-start flex-col'>
-          <Quantity amount={amount} />
+          <Quantity productId={productId} amount={amount} />
           <button
             className='mt-2 text-xs text-red-500 hover:text-red-600 hover:underline'
             aria-label='Delete item'

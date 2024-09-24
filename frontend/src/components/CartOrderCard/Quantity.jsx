@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const Quantity = ({amount}) => {
+const Quantity = ({amount, productId}) => {
 
     const [quantity, setQuantity] = useState(amount);
 
